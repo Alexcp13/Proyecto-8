@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
         password: { type: String, trim: true, required: true },
         ageDate: { type: Number, trim: true, required: true },
         rol: { type: String, trim: true, required: true },
-        imageProfile: { type: String, trim: true, required: true }
+        userImg: { type: String, trim: true, required: true }
 
     },
     {

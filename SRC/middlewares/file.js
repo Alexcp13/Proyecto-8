@@ -10,13 +10,25 @@ const storage = new CloudinaryStorage({
 
     cloudinary: cloudinary,
     params: {
-        folder: "games", // aqui se cambiaria la carpeta.
+        folder: "games",
         alllowedFormats: ["jpg", "png", "jpeg", "gif"]
     }
 
 });
 
+// const createCloudinaryStorage = (folderName) => {
+//     return new CloudinaryStorage({
+//         cloudinary: cloudinary,
+//         params: {
+//             folder: folderName, 
+//             allowedFormats: ["jpg", "png", "jpeg", "gif"]
+//         }
+//     });
+// };
+// Para poder usar la funcion que he creado usaremos:
 
+//Ejm: const storageForGames = createCloudinaryStorage("games");
+//const storageForConsoles = createCloudinaryStorage("consoles");
 
 const upload = multer({ storage });
 

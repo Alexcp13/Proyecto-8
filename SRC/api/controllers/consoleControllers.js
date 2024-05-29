@@ -19,6 +19,11 @@ const createConsole = async (req, res, next) => {
 
         const newConsole = new Console(req.body)
 
+        if (req.file) {
+
+            newGame.consoleImg = req.file.path;
+        }
+
         const consoleSaved = await newConsole.save()
 
         return res.status(201).json(consoleSaved);
@@ -45,9 +50,16 @@ const getConsoleById = async (req, res, next) => {
 const updateConsole = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const newConsole = new Brand(req.body);
+        const newConsole = new Console(req.body);
 
         newConsole._id = id;
+
+        if (req.file) {
+            newConsole.consoleImg = req.file.path;
+            const oldConsole = await Console.findById(id);
+            deleteFile(oldConsole.consoleImg);
+        }
+
 
         const up = await Console.findByIdAndUpdate(id, newConsole, { new: true });
         return res.status(200).json(up)
@@ -67,6 +79,8 @@ const deleteConsole = async (req, res, next) => {
 
         const { id } = req.params;
         const consoleDeleted = await Console.findByIdAndDelete(id);
+
+        deleteFile(consoleDeleted.consoleImg);
 
         return res.status(200).json(consoleDeleted);
 

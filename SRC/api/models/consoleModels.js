@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const consoleSchema = new mongoose.Schema(
     {
-
+        consoleImg: { type: String, required: true },
         model: { type: String, trim: true, required: true },
         price: { type: Number, required: true },
 

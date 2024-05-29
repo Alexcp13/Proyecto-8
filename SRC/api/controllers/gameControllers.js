@@ -23,7 +23,7 @@ const createGame = async (req, res, next) => {
 
         if (req.file) {
 
-            newGame.image = req.file.path;
+            newGame.gameImg = req.file.path;
         }
 
 
@@ -53,9 +53,16 @@ const getGameById = async (req, res, next) => {
 const updateGame = async (req, res, next) => {
     try {
         const { id } = req.params;
-        const newGame = new Brand(req.body);
+        const newGame = new Game(req.body);
 
         newGame._id = id;
+
+        if (req.file) {
+            newGame.gameImg = req.file.path;
+            const oldGame = await Game.findById(id);
+            deleteFile(oldGame.gameImg);
+        }
+
 
         const up = await Game.findByIdAndUpdate(id, newGame, { new: true });
         return res.status(200).json(up)
@@ -74,11 +81,11 @@ const deleteGame = async (req, res, next) => {
     try {
 
         const { id } = req.params;
-        const GameDeleted = await Game.findByIdAndDelete(id);
+        const gameDeleted = await Game.findByIdAndDelete(id);
 
-        deleteFile(GameDeleted.image);
+        deleteFile(gameDeleted.gameImg);
 
-        return res.status(200).json(GameDeleted);
+        return res.status(200).json(gameDeleted);
 
     } catch (error) {
         return res.status(400).json("Error");

@@ -23,6 +23,12 @@ const registerUser = async (req, res, next) => {
             return res.status(400).json("Correo electronico ya en uso")
         }
 
+        if (req.file) {
+
+            newGame.consoleImg = req.file.path;
+        }
+
+
 
         const userSaved = await newUser.save();
 
@@ -59,6 +65,8 @@ const deleteUser = async (req, res, next) => {
     try {
         const { id } = req.params;
         const userDeleted = await User.findByIdAndDelete(id);
+
+        deleteFile(userDeleted.userImg);
         return res.status(200).json({
             mensaje: "Este usuario ha sido elimiando",
             userDeleted
@@ -99,6 +107,12 @@ const updateUser = async (req, res, next) => {
         const newUser = new User(req.body);
 
         newUser._id = id;
+
+        if (req.file) {
+            newGame.userImg = req.file.path;
+            const oldUser = await User.findById(id);
+            deleteFile(oldUser.userImg);
+        }
 
         const up = await User.findByIdAndUpdate(id, newUser, { new: true });
         return res.status(200).json(up)
